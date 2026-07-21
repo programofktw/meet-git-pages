@@ -28,16 +28,23 @@ export class Calendar {
     // 입력 모드: 현재 선택 중인 상태 ('available' 또는 'unavailable')
     this.currentMode = 'available';
 
-    // 툴팁 요소 생성
+    // 모달 요소 생성 — 셀 클릭 시 참가자 명단을 보여줌
     if (this.mode === 'heatmap') {
-      this.tooltip = document.createElement('div');
-      this.tooltip.className = 'tooltip';
-      document.body.appendChild(this.tooltip);
+      // 오버레이 (배경 딤)
+      this.modalOverlay = document.createElement('div');
+      this.modalOverlay.className = 'detail-modal-overlay';
 
-      // 모바일 등을 위한 외부 클릭 시 툴팁 숨김
-      document.addEventListener('click', (e) => {
-        if (!e.target.closest('.calendar-cell')) {
-          this.hideTooltip();
+      // 모달 본체
+      this.modal = document.createElement('div');
+      this.modal.className = 'detail-modal';
+
+      this.modalOverlay.appendChild(this.modal);
+      document.body.appendChild(this.modalOverlay);
+
+      // 오버레이 클릭 시 닫기
+      this.modalOverlay.addEventListener('click', (e) => {
+        if (e.target === this.modalOverlay) {
+          this.hideModal();
         }
       });
     }
@@ -140,13 +147,10 @@ export class Calendar {
         bodyEl.appendChild(availableEl);
         bodyEl.appendChild(unavailableEl);
 
-        // 툴팁 이벤트
-        cell.addEventListener('mouseenter', (e) => this.showTooltip(e, dateStr));
-        cell.addEventListener('mouseleave', () => this.hideTooltip());
-        // 모바일 지원 (클릭)
+        // 히트맵 셀 클릭 시 모달 표시
         cell.addEventListener('click', (e) => {
-          e.stopPropagation(); // document 클릭 차단
-          this.showTooltip(e, dateStr);
+          e.stopPropagation();
+          this.showModal(dateStr);
         });
       } else { // input 모드
         const statusEl = document.createElement('div');
@@ -223,52 +227,58 @@ export class Calendar {
     });
   }
 
-  showTooltip(e, dateStr) {
+  // 모달 표시 — 날짜별 가능/불가 참가자 명단
+  showModal(dateStr) {
     if (this.mode !== 'heatmap') return;
-    if (e.currentTarget.classList.contains('disabled')) return;
     
     const data = this.heatmapData[dateStr] || { available: [], unavailable: [] };
     if (data.available.length === 0 && data.unavailable.length === 0) return;
 
-    let html = '';
+    // 날짜 포맷 (예: 8월 15일 (금))
+    const dateObj = new Date(dateStr + 'T00:00:00');
+    const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+    const dateLabel = `${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일 (${dayNames[dateObj.getDay()]})`;
+
+    let html = `
+      <div class="detail-modal-header">
+        <h4>${dateLabel}</h4>
+        <button class="detail-modal-close">&times;</button>
+      </div>
+      <div class="detail-modal-body">
+    `;
     
     if (data.available.length > 0) {
       html += `
-        <div class="tooltip-section">
-          <div class="tooltip-label available">가능 (${data.available.length}명)</div>
-          <div class="tooltip-names">${data.available.join(', ')}</div>
+        <div class="detail-section">
+          <div class="detail-label available">가능 (${data.available.length}명)</div>
+          <div class="detail-names">${data.available.map(n => `<span class="detail-name available">${n}</span>`).join('')}</div>
         </div>
       `;
     }
     
     if (data.unavailable.length > 0) {
       html += `
-        <div class="tooltip-section">
-          <div class="tooltip-label unavailable">불가 (${data.unavailable.length}명)</div>
-          <div class="tooltip-names">${data.unavailable.join(', ')}</div>
+        <div class="detail-section">
+          <div class="detail-label unavailable">불가 (${data.unavailable.length}명)</div>
+          <div class="detail-names">${data.unavailable.map(n => `<span class="detail-name unavailable">${n}</span>`).join('')}</div>
         </div>
       `;
     }
 
-    this.tooltip.innerHTML = html;
-    this.tooltip.classList.add('visible');
+    html += '</div>';
 
-    // 툴팁 위치 조정
-    const rect = e.currentTarget.getBoundingClientRect();
-    let left = rect.left + window.scrollX + (rect.width / 2) - (this.tooltip.offsetWidth / 2);
-    let top = rect.top + window.scrollY - this.tooltip.offsetHeight - 10;
+    this.modal.innerHTML = html;
+    this.modalOverlay.classList.add('visible');
 
-    // 화면 밖으로 나가는 것 방지
-    if (top < 10) top = rect.bottom + window.scrollY + 10; // 아래로 표시
-    if (left < 10) left = 10;
-
-    this.tooltip.style.left = `${left}px`;
-    this.tooltip.style.top = `${top}px`;
+    // X 버튼 이벤트
+    this.modal.querySelector('.detail-modal-close').addEventListener('click', () => {
+      this.hideModal();
+    });
   }
 
-  hideTooltip() {
-    if (this.tooltip) {
-      this.tooltip.classList.remove('visible');
+  hideModal() {
+    if (this.modalOverlay) {
+      this.modalOverlay.classList.remove('visible');
     }
   }
 

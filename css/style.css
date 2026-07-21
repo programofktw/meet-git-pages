@@ -80,28 +80,44 @@ textarea { resize: vertical; min-height: 80px; }
 .calendar-cell.selected-unavailable .cell-date { color: #c62828; }
 .calendar-cell.selected-unavailable .cell-status { color: #c62828; }
 
-/* === Tooltip === */
-.tooltip {
-  position: fixed;
-  background: #1a1a2e;
-  color: white;
-  padding: 12px 16px;
-  border-radius: 10px;
-  font-size: 0.85rem;
-  max-width: 240px;
-  z-index: 1000;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.15s;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+/* === Detail Modal (참가자 명단 팝업) === */
+.detail-modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
 }
-.tooltip.visible { opacity: 1; }
-.tooltip-section { margin-bottom: 8px; }
-.tooltip-section:last-child { margin-bottom: 0; }
-.tooltip-label { font-weight: 600; font-size: 0.75rem; margin-bottom: 4px; }
-.tooltip-label.available { color: #66bb6a; }
-.tooltip-label.unavailable { color: #ef5350; }
-.tooltip-names { font-size: 0.8rem; line-height: 1.4; }
+.detail-modal-overlay.visible { opacity: 1; visibility: visible; }
+.detail-modal {
+  background: #fff; border-radius: 16px; padding: 0;
+  width: 100%; max-width: 340px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  overflow: hidden;
+}
+.detail-modal-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px; border-bottom: 1px solid #f0f0f0;
+}
+.detail-modal-header h4 { font-size: 1rem; font-weight: 700; margin: 0; }
+.detail-modal-close {
+  background: none; border: none; font-size: 1.5rem; line-height: 1;
+  color: #999; cursor: pointer; padding: 0 4px;
+}
+.detail-modal-close:hover { color: #333; }
+.detail-modal-body { padding: 16px 20px; }
+.detail-section { margin-bottom: 14px; }
+.detail-section:last-child { margin-bottom: 0; }
+.detail-label { font-weight: 600; font-size: 0.85rem; margin-bottom: 8px; }
+.detail-label.available { color: #2e7d32; }
+.detail-label.unavailable { color: #c62828; }
+.detail-names { display: flex; flex-wrap: wrap; gap: 6px; }
+.detail-name {
+  padding: 4px 12px; border-radius: 16px; font-size: 0.85rem; font-weight: 500;
+}
+.detail-name.available { background: #e8f5e9; color: #2e7d32; }
+.detail-name.unavailable { background: #ffebee; color: #c62828; }
 
 /* === Event Header === */
 .event-header { margin-bottom: 24px; }
