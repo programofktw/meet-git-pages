@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meet — 모임 일정 조율</title>
+  <meta name="description" content="모임 참가자들의 가능한 날짜를 한눈에 확인하세요">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="page-header">
+      <h1>Meet</h1>
+      <p>모임 일정을 함께 조율하세요</p>
+    </header>
+    <main class="card">
+      <form id="create-form">
+        
+        <div class="form-group">
+          <label for="event-title">모임 제목</label>
+          <input type="text" id="event-title" placeholder="예: 여름 휴가 일정, 주간 회의 등" required>
+        </div>
+
+        <div class="form-group">
+          <label for="event-description">모임 설명 (선택)</label>
+          <textarea id="event-description" placeholder="참가자들에게 전달할 메시지를 입력하세요"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>날짜 범위</label>
+          <div class="date-range">
+            <input type="date" id="start-date" required>
+            <span>~</span>
+            <input type="date" id="end-date" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="member-input">참가 예정 인원 (선택)</label>
+          <div class="member-input-wrapper">
+            <input type="text" id="member-input" placeholder="이름 입력 후 Enter 또는 쉼표">
+            <button type="button" class="btn btn-secondary btn-small" id="add-member-btn">추가</button>
+          </div>
+          <div class="member-tags" id="member-tags"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="create-btn">모임 만들기</button>
+      </form>
+    </main>
+  </div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

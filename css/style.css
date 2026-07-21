@@ -1,0 +1,186 @@
+/* === Reset & Base === */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; color: #1a1a2e; }
+
+/* === Layout === */
+.container { max-width: 720px; margin: 0 auto; padding: 24px 16px; }
+.page-header { text-align: center; margin-bottom: 32px; }
+.page-header h1 { font-size: 2rem; font-weight: 700; }
+.page-header p { color: #6c757d; margin-top: 8px; }
+
+/* === Card === */
+.card { background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+
+/* === Form Elements === */
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.95rem; }
+input[type="text"], input[type="date"], textarea {
+  width: 100%; padding: 12px 16px; border: 1.5px solid #e0e0e0;
+  border-radius: 10px; font-size: 1rem; font-family: inherit;
+  transition: border-color 0.2s;
+}
+input:focus, textarea:focus { border-color: #3b82f6; outline: none; }
+textarea { resize: vertical; min-height: 80px; }
+.date-range { display: flex; align-items: center; gap: 12px; }
+.date-range span { color: #6c757d; font-weight: 500; }
+
+/* === Buttons === */
+.btn { padding: 12px 24px; border: none; border-radius: 10px; font-size: 1rem; font-weight: 500; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+.btn-primary { background: #3b82f6; color: white; width: 100%; }
+.btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
+.btn-secondary { background: #f1f3f5; color: #1a1a2e; }
+.btn-secondary:hover { background: #e9ecef; }
+.btn-small { padding: 8px 16px; font-size: 0.875rem; }
+
+/* === Member Tags === */
+.member-input-wrapper { display: flex; gap: 8px; }
+.member-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.tag { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #e8f0fe; color: #1a73e8; border-radius: 20px; font-size: 0.875rem; }
+.tag-remove { cursor: pointer; font-size: 1.1rem; line-height: 1; opacity: 0.7; background: none; border: none; color: inherit; }
+.tag-remove:hover { opacity: 1; }
+
+/* === Calendar Grid === */
+.calendar-container { margin-top: 16px; }
+.calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.calendar-nav h3 { font-size: 1.1rem; font-weight: 600; }
+.calendar-nav button { background: none; border: 1px solid #e0e0e0; border-radius: 8px; padding: 6px 12px; cursor: pointer; font-family: inherit; }
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.calendar-day-header { text-align: center; font-size: 0.8rem; font-weight: 500; color: #6c757d; padding: 8px 0; }
+
+/* === Calendar Cell === */
+.calendar-cell {
+  aspect-ratio: 1;
+  border-radius: 10px;
+  border: 1.5px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  min-height: 52px;
+}
+.calendar-cell:hover { border-color: #3b82f6; }
+.calendar-cell.disabled { opacity: 0.3; pointer-events: none; cursor: default; }
+.calendar-cell.outside { visibility: hidden; }
+.cell-date { font-size: 0.75rem; font-weight: 500; text-align: center; padding: 2px 0; line-height: 1.2; }
+.cell-body { flex: 1; display: flex; }
+.cell-available, .cell-unavailable { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 600; color: white; min-height: 24px; }
+.cell-status { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; }
+
+/* 기본값 (0명일 때) */
+.cell-available { background: #f1f8e9; color: #aaa; }
+.cell-unavailable { background: #fce4ec; color: #aaa; }
+
+/* === Input Mode (선택 모드) === */
+.calendar-cell.input-mode { cursor: pointer; }
+.calendar-cell.selected-available { border-color: #2e7d32; background: #e8f5e9; }
+.calendar-cell.selected-available .cell-date { color: #2e7d32; }
+.calendar-cell.selected-available .cell-status { color: #2e7d32; }
+.calendar-cell.selected-unavailable { border-color: #c62828; background: #ffebee; }
+.calendar-cell.selected-unavailable .cell-date { color: #c62828; }
+.calendar-cell.selected-unavailable .cell-status { color: #c62828; }
+
+/* === Tooltip === */
+.tooltip {
+  position: fixed;
+  background: #1a1a2e;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  max-width: 240px;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+.tooltip.visible { opacity: 1; }
+.tooltip-section { margin-bottom: 8px; }
+.tooltip-section:last-child { margin-bottom: 0; }
+.tooltip-label { font-weight: 600; font-size: 0.75rem; margin-bottom: 4px; }
+.tooltip-label.available { color: #66bb6a; }
+.tooltip-label.unavailable { color: #ef5350; }
+.tooltip-names { font-size: 0.8rem; line-height: 1.4; }
+
+/* === Event Header === */
+.event-header { margin-bottom: 24px; }
+.event-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
+.event-description { color: #6c757d; margin-bottom: 16px; line-height: 1.6; }
+.event-meta { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
+/* === Best Dates === */
+.best-dates { margin-bottom: 24px; }
+.best-dates h3 { font-size: 1rem; font-weight: 600; margin-bottom: 12px; }
+.best-date-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 16px; background: #f0fdf4; border-radius: 10px;
+  margin-bottom: 8px; border-left: 4px solid #2e7d32;
+}
+.best-date-item .date { font-weight: 600; }
+.best-date-item .count { font-size: 0.875rem; color: #2e7d32; }
+
+/* === Member Status === */
+.member-status { margin-bottom: 24px; }
+.member-status h3 { font-size: 1rem; font-weight: 600; margin-bottom: 12px; }
+.member-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.member-badge { padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; }
+.member-badge.responded { background: #e8f5e9; color: #2e7d32; }
+.member-badge.pending { background: #f5f5f5; color: #9e9e9e; }
+.add-member-badge { padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; background: #e3f2fd; color: #1565c0; cursor: pointer; border: 1px dashed #90caf9; }
+.add-member-badge:hover { background: #bbdefb; }
+.add-member-area .name-input-row { gap: 8px; }
+.add-member-area .name-input-row input { flex: 1; min-width: 0; }
+.add-member-area .name-input-row .btn { width: auto; white-space: nowrap; flex-shrink: 0; }
+
+/* === Response Section === */
+.response-section { margin-top: 24px; }
+.response-section h3 { font-size: 1rem; font-weight: 600; margin-bottom: 12px; }
+.name-input-row { display: flex; gap: 8px; margin-bottom: 16px; }
+.name-input-row input { flex: 1; }
+
+/* === Legend === */
+.legend { display: flex; gap: 16px; justify-content: center; margin: 12px 0; font-size: 0.8rem; color: #6c757d; }
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-color { width: 16px; height: 16px; border-radius: 4px; }
+
+/* === Link Copy === */
+.link-copy { display: flex; gap: 8px; align-items: center; margin-top: 12px; }
+.link-display { flex: 1; padding: 10px 14px; background: #f5f5f5; border-radius: 8px; font-size: 0.85rem; color: #6c757d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.copy-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a1a2e; color: white; padding: 10px 20px; border-radius: 8px; font-size: 0.875rem; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 2000; }
+.copy-toast.visible { opacity: 1; }
+
+/* === Mode Toggle (가능/불가 모드 선택) === */
+.mode-toggle { display: flex; gap: 8px; margin-bottom: 12px; }
+.mode-btn {
+  flex: 1; padding: 10px 16px; border: 2px solid #e0e0e0; border-radius: 10px;
+  background: #fff; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  font-family: inherit; transition: all 0.2s; text-align: center;
+}
+.mode-btn:hover { background: #f5f5f5; }
+.mode-btn.active-available { border-color: #2e7d32; background: #e8f5e9; color: #2e7d32; }
+.mode-btn.active-unavailable { border-color: #c62828; background: #ffebee; color: #c62828; }
+
+/* === Bulk Actions (일괄 선택) === */
+.bulk-actions { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+
+/* === Section Divider === */
+.section-divider { height: 1px; background: #e0e0e0; margin: 24px 0; }
+
+/* === Loading === */
+.loading { text-align: center; padding: 40px; color: #6c757d; }
+
+/* === Error === */
+.error-message { text-align: center; padding: 40px; color: #c62828; }
+
+/* === 반응형 (모바일 우선) === */
+@media (min-width: 480px) {
+  .calendar-cell { min-height: 64px; }
+  .cell-date { font-size: 0.85rem; padding: 4px 0; }
+  .cell-available, .cell-unavailable { font-size: 0.75rem; }
+}
+@media (min-width: 768px) {
+  .container { padding: 32px 24px; }
+  .calendar-cell { min-height: 72px; }
+}

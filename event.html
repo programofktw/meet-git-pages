@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meet — 모임 일정 조율</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div id="loading" class="loading">이벤트 정보를 불러오는 중입니다...</div>
+    <div id="error" class="error-message" style="display: none;">이벤트를 찾을 수 없습니다.</div>
+    
+    <main id="event-content" class="card" style="display: none;">
+      <!-- 섹션 1: 모임 정보 -->
+      <header class="event-header">
+        <h1 id="event-title-display" class="event-title"></h1>
+        <p id="event-description-display" class="event-description"></p>
+        
+        <div class="link-copy">
+          <div id="link-display" class="link-display"></div>
+          <button id="copy-link-btn" class="btn btn-secondary btn-small">링크 복사</button>
+        </div>
+      </header>
+
+      <!-- 섹션 1: 참가 현황 -->
+      <section class="member-status">
+        <h3>참가자 현황</h3>
+        <div class="member-list" id="members-list">
+          <!-- JS에서 동적으로 채움 -->
+        </div>
+        <div class="add-member-area" style="margin-top: 12px;">
+          <div id="add-member-form" class="name-input-row" style="display: none;">
+            <input type="text" id="new-member-name" placeholder="추가할 이름 입력">
+            <button type="button" id="confirm-member-btn" class="btn btn-primary btn-small">추가</button>
+            <button type="button" id="cancel-member-btn" class="btn btn-secondary btn-small">취소</button>
+          </div>
+          <button id="add-member-btn" class="add-member-badge">+ 멤버 추가</button>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- 섹션 2: 내 응답 입력 -->
+      <section class="response-section">
+        <h3>내 일정 입력하기</h3>
+        <div class="name-input-row">
+          <input type="text" id="participant-name" placeholder="이름을 입력하세요">
+          <button id="load-btn" class="btn btn-secondary">불러오기</button>
+        </div>
+        
+        <div id="input-area" style="display: none;">
+          <p style="font-size: 0.85rem; color: #6c757d; margin-bottom: 12px;">모드를 선택한 뒤 날짜를 클릭하세요. 같은 날짜를 다시 클릭하면 해제됩니다.</p>
+
+          <!-- 모드 토글 -->
+          <div class="mode-toggle">
+            <button type="button" id="mode-available" class="mode-btn active-available">가능 선택</button>
+            <button type="button" id="mode-unavailable" class="mode-btn">불가 선택</button>
+          </div>
+
+          <!-- 일괄 선택 버튼 -->
+          <div class="bulk-actions">
+            <button type="button" id="weekday-unavailable" class="btn btn-secondary btn-small">평일 전부 불가</button>
+            <button type="button" id="clear-all" class="btn btn-secondary btn-small">전체 초기화</button>
+          </div>
+
+          <div id="input-calendar"></div>
+          <div style="margin-top: 20px;">
+            <button id="submit-btn" class="btn btn-primary">내 일정 저장하기</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- 섹션 3: 결과 달력 (히트맵) -->
+      <section>
+        <h3>일정 결과</h3>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-color" style="background:#e8f5e9;"></div>가능</div>
+          <div class="legend-item"><div class="legend-color" style="background:#ffebee;"></div>불가</div>
+        </div>
+        <div id="result-calendar"></div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- 섹션 4: 추천 날짜 (Top 3) -->
+      <div id="best-dates-container" class="best-dates" style="display: none;">
+        <h3>추천 날짜 Top 3</h3>
+        <div id="best-dates-list"></div>
+      </div>
+    </main>
+  </div>
+
+  <div id="copy-toast" class="copy-toast">링크가 복사되었습니다!</div>
+
+  <script type="module" src="js/event.js"></script>
+</body>
+</html>
