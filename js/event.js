@@ -26,10 +26,18 @@ const submitBtn = document.getElementById('submit-btn');
 const bestDatesContainer = document.getElementById('best-dates-container');
 const bestDatesList = document.getElementById('best-dates-list');
 
+// 진입 오버레이 DOM
+const entryOverlay = document.getElementById('entry-overlay');
+const entryTitle = document.getElementById('entry-title');
+const entrySelect = document.getElementById('entry-select');
+const entryConfirm = document.getElementById('entry-confirm');
+const entrySkip = document.getElementById('entry-skip');
+
 let eventData = null;
 let resultCalendar = null;
 let inputCalendar = null;
-let allParticipantsData = {}; // { '이름': { available: [], unavailable: [] } }
+let allParticipantsData = {};
+let currentUser = null; // 진입 시 선택한 사용자 // { '이름': { available: [], unavailable: [] } }
 
 // 1. 이벤트 데이터 로드
 async function loadEvent() {
@@ -42,6 +50,7 @@ async function loadEvent() {
       renderEventInfo();
       initCalendars();
       listenToParticipants();
+      showEntryOverlay(); // 데이터 로드 후 진입 오버레이 표시
     } else {
       showError();
     }
@@ -405,6 +414,47 @@ submitBtn.addEventListener('click', async () => {
     submitBtn.textContent = originalText;
     submitBtn.disabled = false;
   }
+});
+// === 진입 오버레이 ===
+
+// 오버레이에 멤버 목록 채우고 표시
+function showEntryOverlay() {
+  if (!entryOverlay) return;
+
+  entryTitle.textContent = eventData.title || '모임';
+
+  // 멤버 옵션 채우기
+  const members = eventData.members || [];
+  members.forEach(name => {
+    const option = document.createElement('option');
+    option.value = name;
+    option.textContent = name;
+    entrySelect.appendChild(option);
+  });
+
+  entryOverlay.style.display = 'flex';
+}
+
+// 드롭다운 선택 시 버튼 활성화
+entrySelect?.addEventListener('change', () => {
+  entryConfirm.disabled = !entrySelect.value;
+});
+
+// "선택하기" — 이름 확정 후 일정 입력 영역 자동 오픈
+entryConfirm?.addEventListener('click', () => {
+  currentUser = entrySelect.value;
+  if (!currentUser) return;
+
+  entryOverlay.style.display = 'none';
+
+  // 내 일정 입력 드롭다운을 자동 선택 + change 이벤트 트리거
+  participantSelect.value = currentUser;
+  participantSelect.dispatchEvent(new Event('change'));
+});
+
+// "둘러보기만 할게요" — 오버레이 닫기만
+entrySkip?.addEventListener('click', () => {
+  entryOverlay.style.display = 'none';
 });
 
 // 시작

@@ -272,7 +272,7 @@ form.addEventListener('submit', async (e) => {
     const docRef = await addDoc(collection(db, 'events'), eventData);
     
     // 생성 완료 후 이벤트 페이지로 이동
-    window.location.href = `event.html?id=${docRef.id}`;
+    window.location.href = `../event.html?id=${docRef.id}`;
   } catch (error) {
     console.error('Error adding document: ', error);
     alert('모임 생성 중 오류가 발생했습니다. 다시 시도해주세요.');
