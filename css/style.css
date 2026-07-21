@@ -44,13 +44,12 @@ textarea { resize: vertical; min-height: 80px; }
 .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 .calendar-nav h3 { font-size: 1.1rem; font-weight: 600; }
 .calendar-nav button { background: none; border: 1px solid #e0e0e0; border-radius: 8px; padding: 6px 12px; cursor: pointer; font-family: inherit; }
-.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-.calendar-day-header { text-align: center; font-size: 0.8rem; font-weight: 500; color: #6c757d; padding: 8px 0; }
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.calendar-day-header { text-align: center; font-size: 0.75rem; font-weight: 500; color: #6c757d; padding: 6px 0; }
 
 /* === Calendar Cell === */
 .calendar-cell {
-  aspect-ratio: 1;
-  border-radius: 10px;
+  border-radius: 8px;
   border: 1.5px solid #e0e0e0;
   display: flex;
   flex-direction: column;
@@ -58,15 +57,15 @@ textarea { resize: vertical; min-height: 80px; }
   cursor: pointer;
   transition: all 0.2s;
   position: relative;
-  min-height: 52px;
+  min-height: 40px;
 }
 .calendar-cell:hover { border-color: #3b82f6; }
 .calendar-cell.disabled { opacity: 0.3; pointer-events: none; cursor: default; }
 .calendar-cell.outside { visibility: hidden; }
-.cell-date { font-size: 0.75rem; font-weight: 500; text-align: center; padding: 2px 0; line-height: 1.2; }
+.cell-date { font-size: 0.7rem; font-weight: 500; text-align: center; padding: 2px 0; line-height: 1.2; }
 .cell-body { flex: 1; display: flex; }
-.cell-available, .cell-unavailable { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 600; color: white; min-height: 24px; }
-.cell-status { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; }
+.cell-available, .cell-unavailable { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 600; color: white; min-height: 18px; }
+.cell-status { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 600; }
 
 /* 기본값 (0명일 때) */
 .cell-available { background: #f1f8e9; color: #aaa; }
@@ -184,11 +183,15 @@ select:focus { border-color: #3b82f6; outline: none; }
 
 /* === 반응형 (모바일 우선) === */
 @media (min-width: 480px) {
-  .calendar-cell { min-height: 64px; }
-  .cell-date { font-size: 0.85rem; padding: 4px 0; }
-  .cell-available, .cell-unavailable { font-size: 0.75rem; }
+  .calendar-grid { gap: 3px; }
+  .calendar-cell { min-height: 56px; }
+  .cell-date { font-size: 0.8rem; padding: 3px 0; }
+  .cell-available, .cell-unavailable { font-size: 0.7rem; min-height: 22px; }
 }
 @media (min-width: 768px) {
   .container { padding: 32px 24px; }
-  .calendar-cell { min-height: 72px; }
+  .calendar-grid { gap: 4px; }
+  .calendar-cell { min-height: 68px; aspect-ratio: 1; border-radius: 10px; }
+  .cell-date { font-size: 0.85rem; padding: 4px 0; }
+  .cell-available, .cell-unavailable { font-size: 0.75rem; }
 }
