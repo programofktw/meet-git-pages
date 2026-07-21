@@ -39,6 +39,22 @@ textarea { resize: vertical; min-height: 80px; }
 .tag-remove { cursor: pointer; font-size: 1.1rem; line-height: 1; opacity: 0.7; background: none; border: none; color: inherit; }
 .tag-remove:hover { opacity: 1; }
 
+/* === Preset (그룹 프리셋) === */
+.preset-row { display: flex; gap: 8px; margin-bottom: 10px; align-items: center; }
+.preset-row select { flex: 1; min-width: 0; }
+.preset-row .btn { width: auto; white-space: nowrap; flex-shrink: 0; }
+.preset-save-area { margin-top: 10px; }
+.preset-save-row { display: flex; gap: 8px; align-items: center; }
+.preset-save-row input { flex: 1; min-width: 0; }
+.preset-save-row .btn { width: auto; white-space: nowrap; flex-shrink: 0; }
+.preset-save-trigger {
+  display: inline-block; margin-top: 10px; padding: 6px 14px;
+  border-radius: 20px; font-size: 0.8rem; font-weight: 500;
+  background: #f5f5f5; color: #6c757d; border: 1px dashed #ccc;
+  cursor: pointer; font-family: inherit; transition: all 0.2s;
+}
+.preset-save-trigger:hover { background: #e9ecef; color: #1a1a2e; }
+
 /* === Calendar Grid === */
 .calendar-container { margin-top: 16px; }
 .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }

@@ -41,11 +41,31 @@
 
         <div class="form-group">
           <label for="member-input">참가 예정 인원 (선택)</label>
+
+          <!-- 프리셋 불러오기 -->
+          <div class="preset-row" id="preset-row">
+            <select id="preset-select">
+              <option value="">저장된 그룹에서 불러오기</option>
+            </select>
+            <button type="button" class="btn btn-secondary btn-small" id="preset-load-btn">적용</button>
+            <button type="button" class="btn btn-secondary btn-small" id="preset-delete-btn" style="color:#c62828;">삭제</button>
+          </div>
+
           <div class="member-input-wrapper">
             <input type="text" id="member-input" placeholder="이름 입력 후 Enter 또는 쉼표">
             <button type="button" class="btn btn-secondary btn-small" id="add-member-btn">추가</button>
           </div>
           <div class="member-tags" id="member-tags"></div>
+
+          <!-- 현재 멤버를 프리셋으로 저장 -->
+          <div id="preset-save-area" class="preset-save-area" style="display: none;">
+            <div class="preset-save-row">
+              <input type="text" id="preset-name-input" placeholder="그룹 이름 (예: 동아리, 팀원)">
+              <button type="button" class="btn btn-primary btn-small" id="preset-save-confirm">저장</button>
+              <button type="button" class="btn btn-secondary btn-small" id="preset-save-cancel">취소</button>
+            </div>
+          </div>
+          <button type="button" class="preset-save-trigger" id="preset-save-btn">현재 멤버를 그룹으로 저장</button>
         </div>
 
         <button type="submit" class="btn btn-primary" id="create-btn">모임 만들기</button>
