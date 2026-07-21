@@ -48,9 +48,12 @@
       <section class="response-section">
         <h3>내 일정 입력하기</h3>
         <div class="name-input-row">
-          <input type="text" id="participant-name" placeholder="이름을 입력하세요">
-          <button id="load-btn" class="btn btn-secondary">불러오기</button>
+          <select id="participant-name">
+            <option value="">이름을 선택하세요</option>
+            <!-- JS에서 멤버 목록으로 채움 -->
+          </select>
         </div>
+        <p class="input-hint">목록에 없다면 위 '멤버 추가'에서 먼저 등록하세요.</p>
         
         <div id="input-area" style="display: none;">
           <p style="font-size: 0.85rem; color: #6c757d; margin-bottom: 12px;">모드를 선택한 뒤 날짜를 클릭하세요. 같은 날짜를 다시 클릭하면 해제됩니다.</p>

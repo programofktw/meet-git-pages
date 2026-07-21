@@ -20,8 +20,7 @@ const copyLinkBtn = document.getElementById('copy-link-btn');
 const copyToast = document.getElementById('copy-toast');
 const membersList = document.getElementById('members-list');
 const addMemberBtn = document.getElementById('add-member-btn');
-const participantNameInput = document.getElementById('participant-name');
-const loadBtn = document.getElementById('load-btn');
+const participantSelect = document.getElementById('participant-name');
 const inputArea = document.getElementById('input-area');
 const submitBtn = document.getElementById('submit-btn');
 const bestDatesContainer = document.getElementById('best-dates-container');
@@ -116,6 +115,7 @@ function listenToParticipants() {
     updateHeatmap();
     updateBestDates();
     renderMembersStatus();
+    updateParticipantDropdown();
   });
 }
 
@@ -215,6 +215,33 @@ function renderMembersStatus() {
   });
 }
 
+// 드롭다운에 멤버 목록 채우기
+function updateParticipantDropdown() {
+  const currentValue = participantSelect.value;
+  const expectedMembers = eventData.members || [];
+  const respondedMembers = Object.keys(allParticipantsData);
+  const allMembers = [...new Set([...expectedMembers, ...respondedMembers])];
+
+  // 기존 옵션 제거 (첫 번째 placeholder 제외)
+  while (participantSelect.options.length > 1) {
+    participantSelect.remove(1);
+  }
+
+  // 멤버별 옵션 추가
+  allMembers.forEach(name => {
+    const option = document.createElement('option');
+    option.value = name;
+    const isResponded = respondedMembers.includes(name);
+    option.textContent = isResponded ? `${name} (응답 완료)` : name;
+    participantSelect.appendChild(option);
+  });
+
+  // 이전 선택값 유지
+  if (currentValue && allMembers.includes(currentValue)) {
+    participantSelect.value = currentValue;
+  }
+}
+
 // 멤버 추가 기능 — 인라인 입력 UI
 const addMemberForm = document.getElementById('add-member-form');
 const newMemberNameInput = document.getElementById('new-member-name');
@@ -256,6 +283,7 @@ async function addNewMember() {
     if (!eventData.members) eventData.members = [];
     eventData.members.push(name);
     renderMembersStatus();
+    updateParticipantDropdown();
 
     // 입력 폼 리셋
     newMemberNameInput.value = '';
@@ -308,13 +336,17 @@ document.getElementById('clear-all').addEventListener('click', () => {
   inputCalendar.clearAll();
 });
 
-// 내 일정 불러오기
-loadBtn.addEventListener('click', () => {
-  const name = participantNameInput.value.trim();
+// 드롭다운에서 이름 선택 시 → 자동으로 기존 응답 로드
+participantSelect.addEventListener('change', () => {
+  const name = participantSelect.value;
+
   if (!name) {
-    alert('이름을 입력해주세요.');
+    // placeholder 선택 시 입력 영역 숨김
+    inputArea.style.display = 'none';
     return;
   }
+
+  if (!inputCalendar) return;
 
   // 기존 응답이 있으면 로드, 없으면 빈 달력
   if (allParticipantsData[name]) {
@@ -325,14 +357,15 @@ loadBtn.addEventListener('click', () => {
   }
 
   inputArea.style.display = 'block';
-  participantNameInput.disabled = true;
-  loadBtn.style.display = 'none';
 });
 
 // 내 일정 저장하기
 submitBtn.addEventListener('click', async () => {
-  const name = participantNameInput.value.trim();
-  if (!name) return;
+  const name = participantSelect.value;
+  if (!name) {
+    alert('이름을 선택해주세요.');
+    return;
+  }
 
   const selections = inputCalendar.getSelections();
   
@@ -350,10 +383,8 @@ submitBtn.addEventListener('click', async () => {
 
     alert('일정이 저장되었습니다!');
     
-    // 다시 수정할 수 있도록 리셋
-    participantNameInput.disabled = false;
-    loadBtn.style.display = 'block';
-    loadBtn.textContent = '다시 불러오기';
+    // 선택 초기화 → 다른 사람도 입력 가능
+    participantSelect.value = '';
     inputArea.style.display = 'none';
     
     // eventData.members에 없으면 추가
