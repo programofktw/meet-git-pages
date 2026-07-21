@@ -309,15 +309,17 @@ newMemberNameInput.addEventListener('keydown', (e) => {
 // 모드 토글 버튼 — '가능 선택' / '불가 선택' 전환
 const modeAvailableBtn = document.getElementById('mode-available');
 const modeUnavailableBtn = document.getElementById('mode-unavailable');
+const weekdayBtn = document.getElementById('weekday-unavailable');
+const clearAllBtn = document.getElementById('clear-all');
 
-modeAvailableBtn.addEventListener('click', () => {
-  if (!inputCalendar) return; // 달력 초기화 전 클릭 방지
+modeAvailableBtn?.addEventListener('click', () => {
+  if (!inputCalendar) return;
   inputCalendar.setMode('available');
   modeAvailableBtn.className = 'mode-btn active-available';
   modeUnavailableBtn.className = 'mode-btn';
 });
 
-modeUnavailableBtn.addEventListener('click', () => {
+modeUnavailableBtn?.addEventListener('click', () => {
   if (!inputCalendar) return;
   inputCalendar.setMode('unavailable');
   modeUnavailableBtn.className = 'mode-btn active-unavailable';
@@ -325,13 +327,13 @@ modeUnavailableBtn.addEventListener('click', () => {
 });
 
 // 평일 전부 불가 — 직장인을 위한 일괄 선택
-document.getElementById('weekday-unavailable').addEventListener('click', () => {
+weekdayBtn?.addEventListener('click', () => {
   if (!inputCalendar) return;
   inputCalendar.setWeekdaysUnavailable();
 });
 
 // 전체 초기화
-document.getElementById('clear-all').addEventListener('click', () => {
+clearAllBtn?.addEventListener('click', () => {
   if (!inputCalendar) return;
   inputCalendar.clearAll();
 });
